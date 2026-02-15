@@ -32,13 +32,17 @@ function playRound(humanChoice, computerChoice){
 
 }
 
+function playGame(){
+    for(let i = 0; i < 5; i++){
+        let humChoice = getHumanChoice();
+        let comChoice = getComputerChoice();
+        playRound(humChoice, comChoice);
+    }
+
+}
+
 let humanScore = 0;
 let computerScore = 0;
+playGame();
+console.log(humanScore + " " + computerScore);
 
-let humChoice = getHumanChoice();
-console.log(humChoice);
-
-let comChoice = getComputerChoice();
-console.log(comChoice);
-
-playRound(humChoice, comChoice);
