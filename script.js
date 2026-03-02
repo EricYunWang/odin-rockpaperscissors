@@ -1,3 +1,13 @@
+const buttons = document.querySelectorAll("button");
+const results = document.querySelector("div");
+const score = document.querySelector("#score");
+const roundsWin = document.querySelector("#roundScore");
+let humanScore = 0;
+let computerScore = 0;
+let humanRoundsWin = 0;
+let computerRoundsWin = 0;
+updateScore();
+
 function getComputerChoice(){
     let num = Math.floor(Math.random() * 3);
     if (num === 0){
@@ -9,40 +19,56 @@ function getComputerChoice(){
     else return "scissors";
 }
 
-function getHumanChoice(){
-    let userInput = prompt("What is your choice? Please type Rock, Paper, or Scissors.");
-    return userInput;
+function updateScore(){
+    score.textContent = "Your current round score: " + humanScore + " Opponent current round score: " + computerScore;
+    if(humanScore === 5){
+        score.textContent = "You won the game!"
+        humanRoundsWin++;
+        roundsWin.textContent = "Your rounds won: " + humanRoundsWin + " Opponent rounds won: " + computerRoundsWin;
+        humanScore = 0;
+        computerScore = 0;
+        
+    }
+    else if (computerScore === 5){
+        score.textContent = "You lost the game!"
+        computerRoundsWin++;
+        roundsWin.textContent = "Your rounds won: " + humanRoundsWin + " Opponent rounds won: " + computerRoundsWin;
+        humanScore = 0;
+        computerScore = 0;
+
+    }
+
 }
 
 function playRound(humanChoice, computerChoice){
     humanChoice = humanChoice.toLowerCase();
+    const listItem = document.createElement("li");
+    const listText = document.createElement("span");
+    listItem.appendChild(listText);
+    results.appendChild(listItem);
     if(humanChoice === computerChoice){
-        console.log("Tie");
+        listText.textContent = "Tie";
     }
     else if ((humanChoice === "rock" && computerChoice === "paper") || 
              (humanChoice === "paper" && computerChoice === "scissors") ||
              (humanChoice === "scissors" && computerChoice === "rock")){
-        console.log("You lose, " + computerChoice + " beats " + humanChoice);
+        listText.textContent = "You lose, " + computerChoice + " beats " + humanChoice;
         computerScore++;
+        updateScore();
     }
     else {
-        console.log("You win, " + humanChoice + " beats " + computerChoice);
+        listText.textContent = "You win, " + humanChoice + " beats " + computerChoice;
         humanScore++;
+        updateScore();
     }
 
 }
 
-function playGame(){
-    for(let i = 0; i < 5; i++){
-        let humChoice = getHumanChoice();
+buttons.forEach((button)=> {
+    button.addEventListener("click", ()=> {
+        let humanChoice = button.id;
         let comChoice = getComputerChoice();
-        playRound(humChoice, comChoice);
-    }
+        playRound(humanChoice, comChoice);
 
-}
-
-let humanScore = 0;
-let computerScore = 0;
-playGame();
-console.log(humanScore + " " + computerScore);
-
+    });
+});
